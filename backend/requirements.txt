@@ -1,0 +1,23 @@
+# Web framework
+fastapi>=0.111.0
+uvicorn
+
+# Data validation (v2 — pre-built cp314 wheel available)
+pydantic>=2.7.0
+python-dotenv>=1.0.0
+
+# Database ORM
+sqlalchemy>=2.0.0
+
+# ML — BERT embeddings via HuggingFace (torch ships a cp314 CPU wheel)
+# Install torch FIRST from the PyTorch CPU index before running pip install -r requirements.txt:
+#   pip install torch --prefer-binary --index-url https://download.pytorch.org/whl/cpu
+torch
+transformers>=4.40.0
+huggingface_hub>=0.23.0
+
+# Numerical vector math (cosine similarity — replaces a vector database)
+numpy>=2.0.0
+
+# HTTP client for Open Library API
+httpx>=0.27.0

@@ -1,0 +1,879 @@
+/* ═══════════════════════════════════════════════════════════════
+   index.css — Global design system for Book Vibe
+
+   Architecture:
+     1. CSS Custom Properties (variables) — the design token system
+     2. Reset & base styles
+     3. Layout primitives
+     4. Component styles (header, search, cards, grid)
+     5. Animations & keyframes
+     6. Responsive breakpoints
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. DESIGN TOKENS ──────────────────────────────────────────── */
+:root {
+  /* Pink palette — the entire aesthetic lives here.
+     Change these four lines and the whole app recolors. */
+  --pink-50:  #fdf2f8;   /* page background */
+  --pink-100: #fce7f3;   /* card hover tint, chip backgrounds */
+  --pink-200: #fbcfe8;   /* borders, dividers */
+  --pink-300: #f9a8d4;   /* score bar fill, decorative accents */
+  --pink-400: #f472b6;   /* button hover */
+  --pink-500: #ec4899;   /* primary button, links */
+  --pink-600: #db2777;   /* button active, strong accent */
+
+  /* Neutrals */
+  --white:    #ffffff;
+  --gray-50:  #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Border radii */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+  --radius-pill: 999px;
+
+  /* Shadows — pink-tinted so they feel part of the palette */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(249,168,212,0.18), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(236,72,153,0.12), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-pink: 0 0 0 3px rgba(236,72,153,0.18);
+
+  /* Transitions */
+  --transition: 0.2s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* ── 2. RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--pink-50);
+  /* Subtle radial glow behind the hero so the gradient feels alive */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,168,212,0.25) 0%, transparent 70%);
+  color: var(--gray-900);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 3. LAYOUT PRIMITIVES ───────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Container: max-width + centered + horizontal padding */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── 4. HEADER / HERO ───────────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 64px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative floating circles — pure CSS, no images */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: float 8s ease-in-out infinite;
+}
+.hero::before {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, var(--pink-200), transparent 70%);
+  top: -80px; left: -60px;
+}
+.hero::after {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--pink-300), transparent 70%);
+  bottom: -40px; right: -30px;
+  animation-delay: -4s;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--pink-100);
+  color: var(--pink-600);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--pink-200);
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 6vw, 4rem); /* scales with viewport */
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.15;
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+
+/* The italic pink word inside the title */
+.hero-title em {
+  font-style: italic;
+  color: var(--pink-500);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--gray-500);
+  max-width: 480px;
+  margin: 0 auto 36px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+/* ── 5. SEARCH CARD ─────────────────────────────────────────────── */
+.search-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 32px;
+  max-width: 680px;
+  margin: 0 auto;
+  border: 1px solid var(--pink-100);
+  /* Slight lift above the hero background */
+  position: relative;
+  z-index: 1;
+}
+
+.search-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* The main textarea for typing a vibe */
+.search-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 14px 18px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--gray-900);
+  background: var(--pink-50);
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-md);
+  resize: none;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  line-height: 1.55;
+}
+
+.search-input::placeholder { color: var(--gray-400); }
+
+/* Pink focus ring — makes the active state feel premium */
+.search-input:focus {
+  border-color: var(--pink-400);
+  background: var(--white);
+  box-shadow: var(--shadow-pink);
+}
+
+/* ── Suggestion chips ───────────────────────────────────────────── */
+.chips-label {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 20px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: var(--pink-50);
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--pink-600);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.chip:hover {
+  background: var(--pink-100);
+  border-color: var(--pink-300);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.chip.active {
+  background: var(--pink-500);
+  border-color: var(--pink-500);
+  color: var(--white);
+}
+
+/* ── Search button ──────────────────────────────────────────────── */
+.search-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.char-count {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+}
+
+.search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--pink-500) 0%, var(--pink-600) 100%);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 4px 14px rgba(236,72,153,0.35);
+  letter-spacing: 0.01em;
+}
+
+.search-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236,72,153,0.45);
+  background: linear-gradient(135deg, var(--pink-400) 0%, var(--pink-500) 100%);
+}
+
+.search-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.search-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinning icon inside button while loading */
+.spin {
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── 6. RESULTS SECTION ─────────────────────────────────────────── */
+.results-section {
+  padding: 48px 24px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--pink-100);
+}
+
+.results-count {
+  font-size: 1rem;
+  color: var(--gray-600);
+}
+
+.results-count strong { color: var(--gray-900); font-weight: 600; }
+
+.vibe-quote {
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--pink-500);
+}
+
+/* ── Book card grid ─────────────────────────────────────────────── */
+.books-grid {
+  display: grid;
+  /* Auto-fill as many columns as fit, each at least 280px wide */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ── 7. BOOK CARD ───────────────────────────────────────────────── */
+.book-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  /* Cards fade in with a staggered animation (delay set via JS inline style) */
+  animation: fadeUp 0.4s ease both;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--pink-200);
+}
+
+/* ── Book cover area ────────────────────────────────────────────── */
+.book-cover-wrap {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  background: var(--pink-50);
+}
+
+.book-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.book-card:hover .book-cover-img { transform: scale(1.04); }
+
+/* Fallback cover shown when the book has no image */
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: linear-gradient(135deg, var(--pink-300) 0%, var(--pink-500) 100%);
+}
+
+/* Genre badge pinned to the top-left of the cover */
+.genre-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Language badge -- bottom-right of cover, complements the genre badge */
+.lang-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Book card body ─────────────────────────────────────────────── */
+.book-body {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1; /* pushes score bar to the bottom */
+}
+
+.book-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  line-height: 1.3;
+  /* Clamp to 2 lines with an ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-author {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.book-year {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+}
+
+.book-description {
+  font-size: 0.88rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+  /* Clamp to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 4px;
+  flex: 1;
+}
+
+/* ── Match score bar ────────────────────────────────────────────── */
+.score-section {
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.score-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-400);
+}
+
+.score-value {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--pink-600);
+}
+
+.score-qualifier {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* The track (empty bar behind the fill) */
+.score-track {
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+/* The pink fill — width is set via inline style from the score value */
+.score-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--pink-300) 0%, var(--pink-500) 100%);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Animated shimmer while the bar "loads in" */
+  position: relative;
+  overflow: hidden;
+}
+
+.score-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer-bar 2s ease 0.5s both;
+}
+
+/* ── 8. SKELETON LOADING CARDS ──────────────────────────────────── */
+.skeleton-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  overflow: hidden;
+  animation: fadeUp 0.3s ease both;
+}
+
+.skeleton-cover {
+  height: 180px;
+  background: var(--gray-100);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Each .skeleton-line is a placeholder for a line of text */
+.skeleton-line {
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--gray-100);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-line.short  { width: 45%; }
+.skeleton-line.medium { width: 70%; }
+.skeleton-line.long   { width: 95%; }
+.skeleton-line.full   { width: 100%; }
+
+/* ── 9. EMPTY / INITIAL STATE ───────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--gray-400);
+}
+
+.empty-state-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.empty-state-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+}
+
+.empty-state-text {
+  font-size: 0.95rem;
+  max-width: 360px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* ── 10. ERROR STATE ────────────────────────────────────────────── */
+.error-banner {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #be123c;
+  font-size: 0.9rem;
+  margin: 16px 0;
+}
+
+/* ── 11. DISCOVER MORE BANNER ───────────────────────────────────── */
+.discover-banner {
+  margin-top: 48px;
+  padding: 32px;
+  background: var(--white);
+  border: 1.5px dashed var(--pink-200);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.discover-banner h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+
+.discover-banner p {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+  margin-bottom: 20px;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.discover-row {
+  display: flex;
+  gap: 10px;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.discover-input {
+  flex: 1;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-pill);
+  background: var(--pink-50);
+  color: var(--gray-900);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.discover-input:focus {
+  border-color: var(--pink-400);
+  box-shadow: var(--shadow-pink);
+  background: var(--white);
+}
+
+.discover-btn {
+  padding: 10px 20px;
+  background: var(--white);
+  border: 1.5px solid var(--pink-300);
+  border-radius: var(--radius-pill);
+  color: var(--pink-600);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.discover-btn:hover:not(:disabled) {
+  background: var(--pink-50);
+  border-color: var(--pink-500);
+  transform: translateY(-1px);
+}
+
+.discover-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.discover-status {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--gray-500);
+}
+
+.discover-status.success { color: #16a34a; }
+.discover-status.error   { color: #dc2626; }
+
+/* ── Language filter (inside search card) ───────────────────────── */
+.lang-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.lang-icon {
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.lang-tab {
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: var(--pink-50);
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-pill);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.lang-tab:hover:not(:disabled) {
+  background: var(--pink-100);
+  border-color: var(--pink-300);
+  color: var(--pink-600);
+}
+
+.lang-tab.active {
+  background: var(--pink-500);
+  border-color: var(--pink-500);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.lang-tab:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Results language tag (next to count when filtered) */
+.results-lang-tag {
+  font-size: 0.8rem;
+  color: var(--pink-500);
+  font-weight: 500;
+}
+
+/* Discover More heading row */
+.discover-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+
+.discover-heading h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* ── 12. FOOTER ─────────────────────────────────────────────────── */
+.footer {
+  margin-top: auto;
+  padding: 22px 24px;
+  border-top: 1px solid var(--pink-100);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* "Book Vibe" brand name in Playfair -- gives the footer a literary signature */
+.footer-brand {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gray-700);
+  letter-spacing: -0.01em;
+}
+
+.footer-tagline {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+.footer-sep {
+  color: var(--pink-200);
+  font-size: 0.9rem;
+}
+
+.footer-link {
+  font-size: 0.8rem;
+  color: var(--pink-500);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-link:hover { text-decoration: underline; }
+
+/* ── 13. KEYFRAME ANIMATIONS ────────────────────────────────────── */
+
+/* Cards and elements fade up from slightly below */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skeleton shimmer pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* Score bar shimmer after reveal */
+@keyframes shimmer-bar {
+  from { left: -100%; }
+  to   { left: 200%; }
+}
+
+/* Floating decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* Button spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── 14. RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 48px 16px 36px; }
+
+  .hero-title { font-size: 2.2rem; }
+
+  .search-card { padding: 20px 16px; }
+
+  .books-grid {
+    grid-template-columns: 1fr;   /* single column on mobile */
+  }
+
+  .search-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-btn { width: 100%; justify-content: center; }
+
+  .discover-row { flex-direction: column; }
+  .discover-btn { width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
