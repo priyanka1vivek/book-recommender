@@ -56,6 +56,17 @@ export async function fetchRecommendations(query, k = 6, language = null) {
 }
 
 // ---------------------------------------------------------------------------
+// fetchBookById
+// GET /books/{id}
+// Returns a single book's full details (including ol_key for external links).
+// ---------------------------------------------------------------------------
+export async function fetchBookById(id) {
+  const response = await fetch(`${API_BASE}/books/${id}`)
+  if (!response.ok) throw new Error('Book not found')
+  return response.json()
+}
+
+// ---------------------------------------------------------------------------
 // fetchBooks
 // GET /books
 // Returns the full local catalog (used for browsing, not vibe search).

@@ -75,8 +75,8 @@ export default function DiscoverMore({ currentVibe, onSearch }) {
       </div>
 
       <p>
-        Search our 20 million+ book catalog. Type an author name or title -- we'll
-        import it, embed it with the AI model, and re-run your vibe search.
+        Search Open Library (20M+ titles worldwide). Type an author name or title —
+        we'll import it, run it through the AI model, and re-run your vibe search.
       </p>
 
       <div className="discover-row">

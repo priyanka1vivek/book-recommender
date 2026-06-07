@@ -69,15 +69,6 @@ def vibe_check(request: VibeRequest, db: Session = Depends(get_db)):
         language=request.language,
     )
 
-    if not similar:
-        raise HTTPException(
-            status_code=404,
-            detail=(
-                "No books found. "
-                "Run seed.py first, or use /books/discover to import more books."
-            ),
-        )
-
     results: list[BookRecommendation] = []
     for match in similar:
         book = db.query(Book).filter(Book.id == match["book_id"]).first()

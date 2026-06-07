@@ -145,8 +145,9 @@ export default function App() {
             />
             <h2 className="empty-state-title">No matches found</h2>
             <p className="empty-state-text">
-              Try a different vibe, or use the Discover section below to
-              import books from our 20 million-book catalog.
+              Try rephrasing your vibe, or adjust the language filter.
+              You can also use the Discover section below to import any
+              specific book by title or author.
             </p>
           </div>
         )}
@@ -184,14 +185,7 @@ export default function App() {
           <span className="footer-sep" aria-hidden="true">·</span>
           <span className="footer-tagline">Find your next read, one feeling at a time</span>
           <span className="footer-sep" aria-hidden="true">·</span>
-          <a
-            className="footer-link"
-            href="http://localhost:8000/docs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            API Explorer
-          </a>
+          <span className="footer-tagline">open library powered</span>
         </div>
       </footer>
 

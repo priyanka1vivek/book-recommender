@@ -811,7 +811,249 @@ body {
 
 .footer-link:hover { text-decoration: underline; }
 
-/* ── 13. KEYFRAME ANIMATIONS ────────────────────────────────────── */
+/* ── 13. BOOK DETAIL PAGE ───────────────────────────────────────── */
+
+.detail-page {
+  min-height: 100vh;
+  background: var(--pink-50);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,168,212,0.2) 0%, transparent 70%);
+  padding: 40px 24px 80px;
+}
+
+.detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-pill);
+  color: var(--gray-600);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: 32px;
+  transition: all var(--transition);
+}
+
+.detail-back:hover {
+  background: var(--pink-50);
+  border-color: var(--pink-400);
+  color: var(--pink-600);
+  transform: translateX(-2px);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.detail-cover-col {
+  position: sticky;
+  top: 32px;
+}
+
+.detail-cover-img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: block;
+}
+
+.detail-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: var(--shadow-lg);
+}
+
+.detail-cover-placeholder span {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+}
+
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.detail-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  color: var(--gray-500);
+  font-size: 0.9rem;
+}
+
+.detail-author,
+.detail-year {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.detail-author { color: var(--gray-700); }
+.detail-year   { color: var(--gray-400); font-size: 0.85rem; }
+
+.detail-score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--pink-50);
+  border: 1.5px solid var(--pink-200);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pink-600);
+  margin-bottom: 24px;
+}
+
+.detail-score-label {
+  font-weight: 400;
+  color: var(--gray-400);
+  font-size: 0.8rem;
+}
+
+.detail-description {
+  font-size: 1rem;
+  color: var(--gray-700);
+  line-height: 1.75;
+  margin-bottom: 32px;
+  white-space: pre-wrap;
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.detail-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition);
+  border: 1.5px solid transparent;
+}
+
+.detail-link-goodreads {
+  background: var(--pink-500);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(236,72,153,0.3);
+}
+
+.detail-link-goodreads:hover {
+  background: var(--pink-600);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236,72,153,0.4);
+}
+
+.detail-link-ol {
+  background: var(--white);
+  color: var(--gray-700);
+  border-color: var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-link-ol:hover {
+  border-color: var(--pink-300);
+  color: var(--pink-600);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Skeleton for detail page loading */
+.detail-skeleton {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+}
+
+.detail-skeleton-cover {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--gray-100);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.detail-skeleton-body {
+  padding-top: 8px;
+}
+
+.detail-error {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--gray-500);
+  font-size: 1rem;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 680px) {
+  .detail-layout,
+  .detail-skeleton {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .detail-cover-col {
+    position: static;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .detail-cover-placeholder {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* ── 14. KEYFRAME ANIMATIONS ────────────────────────────────────── */
 
 /* Cards and elements fade up from slightly below */
 @keyframes fadeUp {
@@ -849,7 +1091,7 @@ body {
   to   { transform: rotate(360deg); }
 }
 
-/* ── 14. RESPONSIVE ─────────────────────────────────────────────── */
+/* ── 15. RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .hero { padding: 48px 16px 36px; }
 

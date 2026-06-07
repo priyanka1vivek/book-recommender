@@ -18,6 +18,7 @@
 
 import { useState }                from 'react'
 import { BookOpen, CalendarDays }  from 'lucide-react'
+import { useNavigate }             from 'react-router-dom'
 
 // ---------------------------------------------------------------------------
 // Genre colour mapping
@@ -101,34 +102,27 @@ function PlaceholderCover({ title }) {
 }
 
 export default function BookCard({ book, index }) {
-  /*
-    WHY useState FOR coverFailed:
-      When an <img> element fires its onError event (image couldn't load),
-      we need to swap the UI from the real image to the placeholder.
-      React's declarative model means we can't directly manipulate the DOM --
-      instead we update state, which triggers a re-render showing the
-      placeholder. This is cleaner and more predictable than DOM manipulation.
-  */
+  const navigate     = useNavigate()
   const [coverFailed, setCoverFailed] = useState(false)
 
   const pct        = Math.round((book.similarity_score ?? 0) * 100)
   const genreStyle = GENRE_COLORS[book.genre] ?? { bg: '#f3f4f6', color: '#374151' }
   const langStyle  = LANG_COLORS[book.language]
-
-  /*
-    WHY INLINE animationDelay:
-      CSS classes are static -- they can't hold dynamic values like an index.
-      Inline styles in React accept any JS expression, so we calculate the
-      delay (80ms per card position) directly. The CSS animation class
-      (fadeUp) is still in the stylesheet; only the timing varies per card.
-  */
   const animationDelay = `${index * 80}ms`
+
+  function openDetail() {
+    navigate(`/book/${book.id}`, { state: { similarity_score: book.similarity_score } })
+  }
 
   return (
     <article
       className="book-card"
-      style={{ animationDelay }}
-      aria-label={`${book.title} by ${book.author}`}
+      style={{ animationDelay, cursor: 'pointer' }}
+      aria-label={`${book.title} by ${book.author} — click to view details`}
+      onClick={openDetail}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') openDetail() }}
+      tabIndex={0}
+      role="button"
     >
 
       {/* ---- Cover image area ----------------------------------------- */}

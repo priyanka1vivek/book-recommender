@@ -2,10 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "book-recommender-frontend",
+      "name": "frontend",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
-      "port": 5174
+      "runtimeArgs": ["run", "dev"],
+      "port": 5174,
+      "cwd": "frontend"
     }
   ]
 }
