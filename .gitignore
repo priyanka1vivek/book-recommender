@@ -30,6 +30,3 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
-
-# Claude Code session files (not for repo)
-.claude/
